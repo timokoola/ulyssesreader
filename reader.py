@@ -59,6 +59,12 @@ def log_tweeted(tid):
     f.write("\n")
     f.close()
 
+def read_tweeted():
+    f, ignred = get_tweeted_file()
+    f.close()
+    result = int(ignred[-1])
+    return result
+
 if __name__ == "__main__":
     args = handle_command_line()
 
@@ -67,5 +73,8 @@ if __name__ == "__main__":
     bw = BookWorm("pg4300.txt")
     while not bw.completed:
         bw.traverse_book()
-    print bw.tweets
-    api.update_status(bw.tweets[1])
+    tid = read_tweeted()
+    tid = tid + 1
+    print tid
+    api.update_status(bw.tweets[tid])
+    log_tweeted("%d" % tid)

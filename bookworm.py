@@ -1,4 +1,4 @@
-#!/Library/Frameworks/Python.framework/Versions/Current/bin/python
+#!/usr/bin/python
 import re
 
 regsplit = re.compile("([^.?!]+[.!?]) ")
@@ -54,7 +54,7 @@ class BookWorm:
         else:
             self.__curr_tweet = self.__curr_tweet + " " + self.book_array[self.__line]
             self.next_line()
-            
+
     def self_test(self):
         if not self.completed:
             while not bw.completed:
@@ -62,7 +62,6 @@ class BookWorm:
         mmx = max(map(len,bw.tweets)) 
         print mmx
         assert(mmx < 140)
-        
 
 if __name__ == "__main__":
     bw = BookWorm("pg4300.txt")
