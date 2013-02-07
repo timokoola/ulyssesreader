@@ -20,7 +20,7 @@ import tweepy, sys, os
 from collections import Counter
 import re
 import argparse # requires 2.7
-
+from bookworm import BookWorm
 
 class TweepyHelper:
     def __init__(self,keyfile):
@@ -64,4 +64,8 @@ if __name__ == "__main__":
 
     api = (TweepyHelper(args.keyfile)).api
 
-    api.update_status("test")
+    bw = BookWorm("pg4300.txt")
+    while not bw.completed:
+        bw.traverse_book()
+    print bw.tweets
+    api.update_status(bw.tweets[1])
