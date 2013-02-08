@@ -42,27 +42,30 @@ def handle_command_line():
     parser.add_argument("-t", "--test", help="Run a test run", action="store_true")
     parser.add_argument("-k", "--keyfile", help="Twitter account consumer and accesstokens")
     parser.add_argument("-b", "--bookfile", help="Book to be read")
+    parser.add_argument("-l", "--logfile", help="File contains ino about Line we are on.", default="tweetedids.txt")
     args = parser.parse_args()
     return args
 
-def get_tweeted_file():
+def get_tweeted_file(args):
     try:
-        f = open("tweetedids.txt","r+")
+        f = open(args.logfile,"r+")
     except:
-        f = open("tweetedids.txt","w+")
+        f = open(args.logfile,"w+")
     return (f, f.readlines())
 
 
-def log_tweeted(tid):
-    f, ignred = get_tweeted_file()
+def log_tweeted(tid, args):
+    f, ignred = get_tweeted_file(args)
     f.write(tid)
     f.write("\n")
     f.close()
 
-def read_tweeted():
-    f, ignred = get_tweeted_file()
+def read_tweeted(args):
+    f, lines = get_tweeted_file(args)
+    if len(lines) < 1:
+        return 0
     f.close()
-    result = int(ignred[-1])
+    result = int(lines[-1])
     return result
 
 if __name__ == "__main__":
@@ -70,11 +73,12 @@ if __name__ == "__main__":
 
     api = (TweepyHelper(args.keyfile)).api
 
-    bw = BookWorm("pg4300.txt")
+    import os, os.path
+    bw = BookWorm(args.bookfile)
     while not bw.completed:
         bw.traverse_book()
-    tid = read_tweeted()
+    tid = read_tweeted(args)
     tid = tid + 1
-    print tid
+    print "Tweeted line %d." % tid
     api.update_status(bw.tweets[tid])
-    log_tweeted("%d" % tid)
+    log_tweeted("%d" % tid,args)

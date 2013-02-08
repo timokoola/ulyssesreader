@@ -7,7 +7,6 @@ class BookWorm:
     def __init__(self,filename):
         f = open(filename)
         self.book_array = [l.strip() for l in f.readlines()]
-        print self.book_array
         f.close()
         self.__line = 0
         self.__char = 0
@@ -60,7 +59,6 @@ class BookWorm:
             while not bw.completed:
                 bw.traverse_book()
         mmx = max(map(len,bw.tweets)) 
-        print mmx
         assert(mmx < 140)
 
 if __name__ == "__main__":
