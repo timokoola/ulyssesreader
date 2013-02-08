@@ -39,7 +39,8 @@ class TweepyHelper:
 
 def handle_command_line():
     parser = argparse.ArgumentParser(description="Tweets a text format book, line by line.")
-    parser.add_argument("-t", "--test", help="Run a test run", action="store_true")
+    parser.add_argument("-t", "--test", help="Run a test run, get nth tweet",
+            type=int,default=-1 )
     parser.add_argument("-k", "--keyfile", help="Twitter account consumer and accesstokens")
     parser.add_argument("-b", "--bookfile", help="Book to be read")
     parser.add_argument("-l", "--logfile", help="File contains ino about Line we are on.", default="tweetedids.txt")
@@ -77,8 +78,12 @@ if __name__ == "__main__":
     bw = BookWorm(args.bookfile)
     while not bw.completed:
         bw.traverse_book()
-    tid = read_tweeted(args)
-    tid = tid + 1
-    print "Tweeted line %d." % tid
-    api.update_status(bw.tweets[tid])
-    log_tweeted("%d" % tid,args)
+    if args.test < 0:
+        tid = read_tweeted(args)
+        tid = tid + 1
+        print "Tweeted line %d." % tid
+        api.update_status(bw.tweets[tid])
+        log_tweeted("%d" % tid,args)
+    else:
+        print "%d/%d: %s" %  (args.test, len(bw.tweets), bw.tweets[args.test])
+

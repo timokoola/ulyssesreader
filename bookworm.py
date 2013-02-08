@@ -3,10 +3,18 @@ import re
 
 regsplit = re.compile("([^.?!]+[.!?]) ")
 
+
+def handle_line(l):
+    result = l
+    result = result.strip()
+    result = result.replace("_","")
+    result = result.replace("--","-")
+    return result
+
 class BookWorm:
     def __init__(self,filename):
         f = open(filename)
-        self.book_array = [l.strip() for l in f.readlines()]
+        self.book_array = [handle_line(l) for l in f.readlines()]
         f.close()
         self.__line = 0
         self.__char = 0
@@ -26,11 +34,14 @@ class BookWorm:
 
     def split_line(self):
         parts = regsplit.findall(self.book_array[self.__line])
+        cut = 140
         if len(parts) == 0:
             parts = self.book_array[self.__line].split()
-        while len(self.__curr_tweet) != 0:
-            added = parts[::-1].pop()
-            if len(added) + len(self.__curr_tweet) +1 >= 140:
+            cut = 140
+        parts.reverse()
+        while len(self.__curr_tweet) != 0 and len(parts) > 0:
+            added = parts.pop()
+            if len(added) + len(self.__curr_tweet) +1 >= cut:
                 self.store_current()
             else:
                 self.__char = self.__char + len(added) + 1
@@ -45,13 +56,13 @@ class BookWorm:
         if len(self.book_array[self.__line]) == 0:
             self.store_current()
             self.next_line()
-        elif len(self.book_array[self.__line]) >= 140:
+        elif len(self.book_array[self.__line][self.__char:]) >= 140:
             self.store_current()
             self.split_line()
         elif len(self.__curr_tweet) + len(self.book_array[self.__line]) >= 140:
             self.split_line()
         else:
-            self.__curr_tweet = self.__curr_tweet + " " + self.book_array[self.__line]
+            self.__curr_tweet = self.__curr_tweet + " " + self.book_array[self.__line][self.__char:]
             self.next_line()
 
     def self_test(self):
