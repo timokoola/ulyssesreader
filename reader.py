@@ -82,7 +82,10 @@ if __name__ == "__main__":
         tid = read_tweeted(args)
         tid = tid + 1
         print "Tweeted line %d." % tid
-        api.update_status(bw.tweets[tid])
+        try:
+            api.update_status(bw.tweets[tid])
+        except tweepy.TweepError:
+            api.update_status("%s, (%d)" % (bw.tweets[tid], tid))
         log_tweeted("%d" % tid,args)
     else:
         print "%d/%d: %s" %  (args.test, len(bw.tweets), bw.tweets[args.test])
