@@ -85,7 +85,7 @@ if __name__ == "__main__":
         try:
             api.update_status(bw.tweets[tid])
         except tweepy.TweepError:
-            api.update_status("%s, (%d)" % (bw.tweets[tid], tid))
+            api.update_status("(%d)%s" % (tid,bw.tweets[tid]))
         log_tweeted("%d" % tid,args)
     else:
         print "%d/%d: %s" %  (args.test, len(bw.tweets), bw.tweets[args.test])
