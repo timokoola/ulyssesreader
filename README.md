@@ -2,8 +2,6 @@
 
 Ulysses Reader source code is here.
 
-# Installation
-
 ## Pre-requirements
 
 You need to have version 2.7 of Python installed in your system. Test this by opening the command line and writing.
@@ -48,6 +46,22 @@ Congratulations, you now have all the pre-requisites in place.
 # Install Ulyssesreader
 
 ## Get the source code from GitHub
+
+There are couple of options:
+* Download the zip
+* Clone the Git repository (If you don't know what that means select the first option)
+
+Put the script into a directory on your system.
+
+## Create "keys.keys" file
+
+Create a file called "keys.keys" into the directory you put the. It should have 4 lines and look like this
+
+	<your consumer key from step 9 above>#consumer key
+	<your consumer secret from step 9 above>#consumer secret
+	<your access token from step 9 above>#access token
+	<your access token secret from step 9 above>#access token secret
+
 
 
 
